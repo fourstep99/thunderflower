@@ -431,61 +431,84 @@
   </section>
 
 
-  <!-- 실제 배송 사진 (랜덤 표시) -->
-  <section style="padding:14px 12px 8px; background:#fff;">
-    <div style="text-align:center; margin-bottom:10px;">
+  <!-- 실제 배송 사진 (자동 랜덤 교체) -->
+  <section class="section" style="padding:10px 12px 4px; background:#fff;">
+    <div style="text-align:center; margin-bottom:8px;">
       <h3 style="font-size:16px; font-weight:900; color:#c2185b; margin:0; letter-spacing:-0.3px;">💐 실제 배송 사진</h3>
-      <p style="font-size:11px; color:#999; margin-top:3px;">새로고침할 때마다 다른 사진이 보여집니다</p>
     </div>
-    <div id="reviewGrid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px;"></div>
+    <div id="reviewGrid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:5px;"></div>
   </section>
   <script>
   (function(){
     const reviews = [
-      '가지마루','근조4단기본','근조기본','근조기본 (2)','근조기본 (3)','근조기본 (4)',
-      '근조스탠드2','근조오브제1단','근조오브제2단2','근조특대 (3)','근조화환',
+      '가지마루','근조4단기본','근조기본','근조기본 (3)','근조기본2','근조기본3',
+      '근조스탠드2','근조오브제1단','근조오브제2단2','근조특대3','근조화환',
       '금전수','금전수2','녹보수','동양란','만천홍','뱅갈고무나무','뱅갈고무나무2',
       '삼색조','스투키','철골그림도자기','철골소심',
-      '축하기본 (2)','축하기본 (3)','축하대품','축하특대',
+      '축하기본','축하기본2','축하대품','축하특대',
       '크로톤','파키라','포춘','해피트리','행운목',
       '호접란','호접란2','황룡금투각분','황룡금황금투각'
     ];
-    // 화면 표시용 상품명: 끝의 중복번호 제거 (" (2)", "2" 등)
-    // 단, 중간 숫자는 그대로 (예: 근조4단기본 OK)
+    // 화면 표시용 상품명: 끝 중복번호 제거 (" (2)", "2"), 중간 숫자 유지
     function displayName(name){
-      let n = name.replace(/\s*\(\d+\)$/, '');   // " (숫자)" 제거
-      n = n.replace(/(\D)\d+$/, '$1');           // 한글/문자 뒤 끝숫자 제거
+      let n = name.replace(/\s*\(\d+\)$/, '');
+      n = n.replace(/(\D)\d+$/, '$1');
       return n;
     }
-    // Fisher-Yates 셔플 후 6개
-    const shuffled = reviews.slice();
-    for(let i=shuffled.length-1; i>0; i--){
-      const j = Math.floor(Math.random()*(i+1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    const pick = shuffled.slice(0, 6);
-    const grid = document.getElementById('reviewGrid');
-    pick.forEach(name => {
+    function buildCard(name){
       const a = document.createElement('a');
       a.href = '리뷰/' + encodeURIComponent(name) + '.png';
       a.target = '_blank';
       a.rel = 'noopener';
-      a.style.cssText = 'display:flex; flex-direction:column; align-items:center; overflow:hidden; border-radius:10px; box-shadow:0 2px 8px rgba(194,24,91,0.12); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; padding:6px 4px 4px;';
-      const imgBox = document.createElement('div');
-      imgBox.style.cssText = 'width:78%; aspect-ratio:1; overflow:hidden; background:#fafafa; border-radius:8px;';
+      a.dataset.name = name;
+      a.style.cssText = 'display:flex; flex-direction:column; overflow:hidden; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.08); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; transition:opacity 0.5s;';
       const img = document.createElement('img');
       img.src = '리뷰/' + encodeURIComponent(name) + '.png';
       img.alt = displayName(name);
       img.loading = 'lazy';
-      img.style.cssText = 'width:100%; height:100%; object-fit:cover; display:block;';
-      imgBox.appendChild(img);
+      img.style.cssText = 'width:100%; aspect-ratio:1; object-fit:cover; display:block;';
+      img.onerror = function(){ a.style.display = 'none'; };
       const label = document.createElement('div');
       label.textContent = displayName(name);
-      label.style.cssText = 'margin-top:6px; font-size:14px; font-weight:900; color:#222; text-align:center; line-height:1.2; letter-spacing:-0.4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;';
-      a.appendChild(imgBox);
+      label.style.cssText = 'padding:4px 2px; font-size:12px; font-weight:800; color:#222; text-align:center; line-height:1.2; letter-spacing:-0.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; background:#fef5f9;';
+      a.appendChild(img);
       a.appendChild(label);
-      grid.appendChild(a);
-    });
+      return a;
+    }
+    // 셔플
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1; i>0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+    const COUNT = 6;
+    const grid = document.getElementById('reviewGrid');
+    let current = shuffle(reviews).slice(0, COUNT);
+    current.forEach(n => grid.appendChild(buildCard(n)));
+
+    // 2.5초마다 한 칸씩 새 이미지로 교체 (페이드)
+    setInterval(() => {
+      const idx = Math.floor(Math.random() * COUNT);
+      // 현재 표시중이 아닌 이미지에서 선택
+      const candidates = reviews.filter(r => !current.includes(r));
+      if(candidates.length === 0) return;
+      const next = candidates[Math.floor(Math.random() * candidates.length)];
+      const oldCard = grid.children[idx];
+      oldCard.style.opacity = '0';
+      setTimeout(() => {
+        const newCard = buildCard(next);
+        newCard.style.opacity = '0';
+        grid.replaceChild(newCard, oldCard);
+        // 다음 프레임에 페이드인
+        requestAnimationFrame(() => {
+          newCard.style.opacity = '1';
+        });
+        current[idx] = next;
+      }, 500);
+    }, 2500);
   })();
   </script>
 
