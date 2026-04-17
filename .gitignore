@@ -1,0 +1,10 @@
+# 원본 이미지 (용량 절감)
+*.jfif
+
+# 시스템
+Thumbs.db
+.DS_Store
+
+# 에디터
+.vscode/
+.idea/
