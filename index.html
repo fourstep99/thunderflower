@@ -47,6 +47,13 @@
       100% { transform: translateX(-100%); }
     }
 
+    /* FAQ 플로팅 버튼 깜빡임 */
+    @keyframes faqBlink {
+      0%, 70%   { opacity: 1; }
+      80%, 90%  { opacity: 0.15; }
+      100%      { opacity: 1; }
+    }
+
     /* ══════════════════════
        헤더
     ══════════════════════ */
@@ -105,8 +112,9 @@
       gap: 2px;
     }
     .hbtn .hbtn-main { display: none; }
-    .hbtn .hbtn-icon { font-size: 22px; line-height: 1; display: block; }
-    .hbtn .hbtn-label { white-space: nowrap; font-weight: 700; font-size: 12px; opacity: 0.9; }
+    .hbtn-top { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+    .hbtn .hbtn-icon { font-size: 18px; line-height: 1; }
+    .hbtn .hbtn-label { white-space: nowrap; font-weight: 700; font-size: 13px; opacity: 0.95; }
     .hbtn .hbtn-sub { font-size: 18px; font-weight: 900; opacity: 1; white-space: nowrap; letter-spacing: -0.3px; }
     .hbtn:hover { transform: translateY(-2px); }
 
@@ -261,9 +269,10 @@
 
       .header-btns { gap: 6px; max-width: 100%; }
       .hbtn { padding: 8px 4px; min-width: 0; flex: unset; border-radius: 14px; }
-      .hbtn .hbtn-icon { font-size: 18px; }
-      .hbtn .hbtn-label { font-size: 10px; }
-      .hbtn .hbtn-sub { font-size: 15px; }
+      .hbtn-top { gap: 3px; }
+      .hbtn .hbtn-icon { font-size: 14px; }
+      .hbtn .hbtn-label { font-size: 11px; }
+      .hbtn .hbtn-sub { font-size: 14px; }
 
       .cat-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -315,22 +324,18 @@
       <!-- 3버튼 -->
       <div class="header-btns">
         <a href="tel:15336133" class="hbtn hbtn-tel">
-          <span class="hbtn-icon">📞</span>
-          <span class="hbtn-label">전화 주문</span>
+          <span class="hbtn-top"><span class="hbtn-icon">📞</span><span class="hbtn-label">전화 주문</span></span>
           <span class="hbtn-sub">1533-6133</span>
         </a>
         <a href="sms:15336133" class="hbtn hbtn-sms">
-          <span class="hbtn-icon">✉️</span>
-          <span class="hbtn-label">문자 주문</span>
+          <span class="hbtn-top"><span class="hbtn-icon">✉️</span><span class="hbtn-label">문자 주문</span></span>
           <span class="hbtn-sub">1533-6133</span>
         </a>
         <a href="https://꽃서비스.com/?shopid=thunderflower" class="hbtn hbtn-shop" target="_blank">
-          <span class="hbtn-icon">🛒</span>
-          <span class="hbtn-label">쇼핑몰 주문</span>
+          <span class="hbtn-top"><span class="hbtn-icon">🛒</span><span class="hbtn-label">쇼핑몰 주문</span></span>
         </a>
         <a href="http://pf.kakao.com/_jGycn/chat" class="hbtn hbtn-kakao" target="_blank">
-          <span class="hbtn-icon">💬</span>
-          <span class="hbtn-label">카카오톡 주문</span>
+          <span class="hbtn-top"><span class="hbtn-icon">💬</span><span class="hbtn-label">카카오톡 주문</span></span>
         </a>
       </div>
     </div>
@@ -438,7 +443,7 @@
     </div>
   </footer>
 
-  <!-- FAQ 플로팅 버튼 (우하단 고정) -->
+  <!-- FAQ 플로팅 버튼 (우하단 고정, 깜빡임) -->
   <a href="http://pf.kakao.com/_jGycn/111229090" target="_self"
      aria-label="자주 묻는 질문 FAQ"
      style="position:fixed; right:16px; bottom:20px; z-index:200;
@@ -447,6 +452,7 @@
             background:linear-gradient(135deg,#FEE500,#FFD600);
             color:#3C1E1E; text-decoration:none;
             box-shadow:0 6px 18px rgba(254,229,0,0.55), 0 2px 6px rgba(0,0,0,0.18);
+            animation:faqBlink 2.5s ease-in-out infinite;
             transition:transform 0.15s;">
     <span style="font-size:22px; line-height:1;">❓</span>
     <span style="font-size:10px; font-weight:900; margin-top:2px; letter-spacing:-0.3px;">FAQ</span>
