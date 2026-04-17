@@ -431,6 +431,64 @@
   </section>
 
 
+  <!-- 실제 배송 사진 (랜덤 표시) -->
+  <section style="padding:14px 12px 8px; background:#fff;">
+    <div style="text-align:center; margin-bottom:10px;">
+      <h3 style="font-size:16px; font-weight:900; color:#c2185b; margin:0; letter-spacing:-0.3px;">💐 실제 배송 사진</h3>
+      <p style="font-size:11px; color:#999; margin-top:3px;">새로고침할 때마다 다른 사진이 보여집니다</p>
+    </div>
+    <div id="reviewGrid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px;"></div>
+  </section>
+  <script>
+  (function(){
+    const reviews = [
+      '가지마루','근조4단기본','근조기본','근조기본 (2)','근조기본 (3)','근조기본 (4)',
+      '근조스탠드2','근조오브제1단','근조오브제2단2','근조특대 (3)','근조화환',
+      '금전수','금전수2','녹보수','동양란','만천홍','뱅갈고무나무','뱅갈고무나무2',
+      '삼색조','스투키','철골그림도자기','철골소심',
+      '축하기본 (2)','축하기본 (3)','축하대품','축하특대',
+      '크로톤','파키라','포춘','해피트리','행운목',
+      '호접란','호접란2','황룡금투각분','황룡금황금투각'
+    ];
+    // 화면 표시용 상품명: 끝의 중복번호 제거 (" (2)", "2" 등)
+    // 단, 중간 숫자는 그대로 (예: 근조4단기본 OK)
+    function displayName(name){
+      let n = name.replace(/\s*\(\d+\)$/, '');   // " (숫자)" 제거
+      n = n.replace(/(\D)\d+$/, '$1');           // 한글/문자 뒤 끝숫자 제거
+      return n;
+    }
+    // Fisher-Yates 셔플 후 6개
+    const shuffled = reviews.slice();
+    for(let i=shuffled.length-1; i>0; i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    const pick = shuffled.slice(0, 6);
+    const grid = document.getElementById('reviewGrid');
+    pick.forEach(name => {
+      const a = document.createElement('a');
+      a.href = '리뷰/' + encodeURIComponent(name) + '.png';
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.style.cssText = 'display:flex; flex-direction:column; overflow:hidden; border-radius:10px; box-shadow:0 2px 8px rgba(194,24,91,0.12); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit;';
+      const imgBox = document.createElement('div');
+      imgBox.style.cssText = 'width:100%; aspect-ratio:1; overflow:hidden; background:#fafafa;';
+      const img = document.createElement('img');
+      img.src = '리뷰/' + encodeURIComponent(name) + '.png';
+      img.alt = displayName(name);
+      img.loading = 'lazy';
+      img.style.cssText = 'width:100%; height:100%; object-fit:cover; display:block;';
+      imgBox.appendChild(img);
+      const label = document.createElement('div');
+      label.textContent = displayName(name);
+      label.style.cssText = 'padding:5px 4px; font-size:11px; font-weight:700; color:#444; text-align:center; line-height:1.2; letter-spacing:-0.3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;';
+      a.appendChild(imgBox);
+      a.appendChild(label);
+      grid.appendChild(a);
+    });
+  })();
+  </script>
+
   <!-- 통합 안내 배너 -->
   <div style="background:linear-gradient(135deg,#fce4ec 0%,#fff8fb 100%); padding:24px 24px; font-size:14px; color:#333; line-height:1.9;">
     <b style="color:#c2185b; font-size:15px;">주문 안내</b><br />
