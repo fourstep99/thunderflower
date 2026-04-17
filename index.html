@@ -469,24 +469,32 @@
     let current = shuffle(reviews).slice(0, COUNT);
     current.forEach(n => grid.appendChild(buildCard(n)));
 
-    // 2.5초마다 한 칸씩 새 이미지로 교체 (페이드)
+    // 2.5초마다 2칸씩 새 이미지로 교체 (페이드)
     setInterval(() => {
-      const idx = Math.floor(Math.random() * COUNT);
-      // 현재 표시중이 아닌 이미지에서 선택
+      // 다른 인덱스 2개 선택
+      const indices = [];
+      while (indices.length < 2) {
+        const i = Math.floor(Math.random() * COUNT);
+        if (!indices.includes(i)) indices.push(i);
+      }
+      // 현재 표시중이 아닌 후보 중 2개 선택
       const candidates = reviews.filter(r => !current.includes(r));
-      if(candidates.length === 0) return;
-      const next = candidates[Math.floor(Math.random() * candidates.length)];
-      const oldCard = grid.children[idx];
-      oldCard.style.opacity = '0';
+      if (candidates.length < 2) return;
+      const news = [];
+      while (news.length < 2) {
+        const c = candidates[Math.floor(Math.random() * candidates.length)];
+        if (!news.includes(c)) news.push(c);
+      }
+      // 페이드 아웃
+      indices.forEach(i => grid.children[i].style.opacity = '0');
       setTimeout(() => {
-        const newCard = buildCard(next);
-        newCard.style.opacity = '0';
-        grid.replaceChild(newCard, oldCard);
-        // 다음 프레임에 페이드인
-        requestAnimationFrame(() => {
-          newCard.style.opacity = '1';
+        indices.forEach((i, k) => {
+          const newCard = buildCard(news[k]);
+          newCard.style.opacity = '0';
+          grid.replaceChild(newCard, grid.children[i]);
+          requestAnimationFrame(() => { newCard.style.opacity = '1'; });
+          current[i] = news[k];
         });
-        current[idx] = next;
       }, 500);
     }, 2500);
   })();
