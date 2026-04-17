@@ -408,29 +408,6 @@
     </div>
   </section>
 
-  <!-- 특징 -->
-  <section style="background:#f8f9fa; padding:6px 20px;">
-    <div style="max-width:1100px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:center; gap:6px; text-align:center;">
-      <div style="flex:1; min-width:140px; background:#fff; border-radius:10px; padding:8px 10px; border-left:3px solid #c2185b;">
-        <div style="font-size:14px; font-weight:700; color:#222;">바로배송 / 빠른배달</div>
-        <div style="font-size:11px; color:#888; margin-top:2px;">전국 무료배송</div>
-      </div>
-      <div style="flex:1; min-width:140px; background:#fff; border-radius:10px; padding:8px 10px; border-left:3px solid #c2185b;">
-        <div style="font-size:14px; font-weight:700; color:#222;">주말예약 환영</div>
-        <div style="font-size:11px; color:#888; margin-top:2px;">주말 · 공휴일 예약 가능</div>
-      </div>
-      <div style="flex:1; min-width:140px; background:#fff; border-radius:10px; padding:8px 10px; border-left:3px solid #c2185b;">
-        <div style="font-size:14px; font-weight:700; color:#222;">친절 상담 / 정성 제작</div>
-        <div style="font-size:11px; color:#888; margin-top:2px;">전화 / 카카오 상담</div>
-      </div>
-      <div style="flex:1; min-width:140px; background:#fff; border-radius:10px; padding:8px 10px; border-left:3px solid #c2185b;">
-        <div style="font-size:14px; font-weight:700; color:#222;">안전한 결제</div>
-        <div style="font-size:11px; color:#888; margin-top:2px;">카드 / 계좌이체 / 영수증</div>
-      </div>
-    </div>
-  </section>
-
-
   <!-- 실제 배송 사진 (자동 랜덤 교체) -->
   <section class="section" style="padding:10px 12px 4px; background:#fff;">
     <div style="text-align:center; margin-bottom:8px;">
@@ -461,17 +438,20 @@
       a.target = '_blank';
       a.rel = 'noopener';
       a.dataset.name = name;
-      a.style.cssText = 'display:flex; flex-direction:column; overflow:hidden; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.08); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; transition:opacity 0.5s;';
+      a.style.cssText = 'display:flex; flex-direction:column; align-items:center; overflow:hidden; border-radius:10px; box-shadow:0 2px 8px rgba(194,24,91,0.12); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; padding:6px 4px 5px; transition:opacity 0.5s;';
+      const imgBox = document.createElement('div');
+      imgBox.style.cssText = 'width:62%; aspect-ratio:1; overflow:hidden; background:#fafafa; border-radius:8px;';
       const img = document.createElement('img');
       img.src = '리뷰/' + encodeURIComponent(name) + '.png';
       img.alt = displayName(name);
       img.loading = 'lazy';
-      img.style.cssText = 'width:100%; aspect-ratio:1; object-fit:cover; display:block;';
+      img.style.cssText = 'width:100%; height:100%; object-fit:cover; display:block;';
       img.onerror = function(){ a.style.display = 'none'; };
+      imgBox.appendChild(img);
       const label = document.createElement('div');
       label.textContent = displayName(name);
-      label.style.cssText = 'padding:4px 2px; font-size:12px; font-weight:800; color:#222; text-align:center; line-height:1.2; letter-spacing:-0.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; background:#fef5f9;';
-      a.appendChild(img);
+      label.style.cssText = 'margin-top:5px; font-size:13px; font-weight:900; color:#222; text-align:center; line-height:1.2; letter-spacing:-0.4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;';
+      a.appendChild(imgBox);
       a.appendChild(label);
       return a;
     }
@@ -511,6 +491,28 @@
     }, 2500);
   })();
   </script>
+
+  <!-- 특징 (리뷰 아래, 주문 안내 위) -->
+  <section style="background:#f8f9fa; padding:8px 12px;">
+    <div style="max-width:1100px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:center; gap:6px; text-align:center;">
+      <div style="flex:1; min-width:140px; background:#fff; border-radius:10px; padding:8px 10px; border-left:3px solid #c2185b;">
+        <div style="font-size:14px; font-weight:700; color:#222;">바로배송 / 빠른배달</div>
+        <div style="font-size:11px; color:#888; margin-top:2px;">전국 무료배송</div>
+      </div>
+      <div style="flex:1; min-width:140px; background:#fff; border-radius:10px; padding:8px 10px; border-left:3px solid #c2185b;">
+        <div style="font-size:14px; font-weight:700; color:#222;">주말예약 환영</div>
+        <div style="font-size:11px; color:#888; margin-top:2px;">주말 · 공휴일 예약 가능</div>
+      </div>
+      <div style="flex:1; min-width:140px; background:#fff; border-radius:10px; padding:8px 10px; border-left:3px solid #c2185b;">
+        <div style="font-size:14px; font-weight:700; color:#222;">친절 상담 / 정성 제작</div>
+        <div style="font-size:11px; color:#888; margin-top:2px;">전화 / 카카오 상담</div>
+      </div>
+      <div style="flex:1; min-width:140px; background:#fff; border-radius:10px; padding:8px 10px; border-left:3px solid #c2185b;">
+        <div style="font-size:14px; font-weight:700; color:#222;">안전한 결제</div>
+        <div style="font-size:11px; color:#888; margin-top:2px;">카드 / 계좌이체 / 영수증</div>
+      </div>
+    </div>
+  </section>
 
   <!-- 통합 안내 배너 -->
   <div style="background:linear-gradient(135deg,#fce4ec 0%,#fff8fb 100%); padding:24px 24px; font-size:14px; color:#333; line-height:1.9;">
