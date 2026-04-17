@@ -56,6 +56,23 @@
       100%      { opacity: 1; }
     }
 
+    /* 헤더 4버튼 순차 톡 튀기 애니메이션 (8초 주기, 2초 간격) */
+    @keyframes btnPop {
+      0%   { transform: scale(1);    filter: brightness(1); }
+      4%   { transform: scale(1.18); filter: brightness(1.25); }
+      8%   { transform: scale(0.94); filter: brightness(1.1); }
+      12%  { transform: scale(1.10); filter: brightness(1.15); }
+      17%  { transform: scale(1);    filter: brightness(1); }
+      100% { transform: scale(1);    filter: brightness(1); }
+    }
+    .hbtn { animation: btnPop 8s ease-in-out infinite; }
+    .header-btns .hbtn:nth-child(1) { animation-delay: 0s; }
+    .header-btns .hbtn:nth-child(2) { animation-delay: 2s; }
+    .header-btns .hbtn:nth-child(3) { animation-delay: 4s; }
+    .header-btns .hbtn:nth-child(4) { animation-delay: 6s; }
+    /* 호버 시 애니메이션 정지(사용자 의도 우선) */
+    .hbtn:hover { animation-play-state: paused; }
+
     /* ══════════════════════
        헤더
     ══════════════════════ */
