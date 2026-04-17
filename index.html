@@ -105,9 +105,9 @@
       gap: 2px;
     }
     .hbtn .hbtn-main { display: none; }
-    .hbtn .hbtn-icon { font-size: 26px; line-height: 1; display: block; }
-    .hbtn .hbtn-label { white-space: nowrap; font-weight: 700; font-size: 15px; }
-    .hbtn .hbtn-sub { font-size: 13px; font-weight: 600; opacity: 0.85; white-space: nowrap; }
+    .hbtn .hbtn-icon { font-size: 22px; line-height: 1; display: block; }
+    .hbtn .hbtn-label { white-space: nowrap; font-weight: 700; font-size: 12px; opacity: 0.9; }
+    .hbtn .hbtn-sub { font-size: 18px; font-weight: 900; opacity: 1; white-space: nowrap; letter-spacing: -0.3px; }
     .hbtn:hover { transform: translateY(-2px); }
 
     .hbtn-tel {
@@ -138,112 +138,6 @@
       height: 3px;
       background: linear-gradient(90deg, transparent, #f8a4c8, #e91e8c, #c2185b, #e91e8c, #f8a4c8, transparent);
     }
-
-    /* ══════════════════════
-       히어로 배너
-    ══════════════════════ */
-    .hero {
-      position: relative;
-      min-height: 40px;
-      background:
-        linear-gradient(160deg, rgba(26,35,126,0.88) 0%, rgba(57,73,171,0.82) 40%, rgba(92,107,192,0.75) 100%),
-        url('hero.jpg') center/cover no-repeat;
-      background-color: #3949ab;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    /* 꽃잎 장식 */
-    .hero::before {
-      content: '🌸🌺🌷🌸🌺🌷🌸🌺🌷🌸';
-      position: absolute;
-      top: -10px; left: 0; right: 0;
-      font-size: 40px;
-      opacity: 0.15;
-      letter-spacing: 20px;
-      line-height: 1;
-    }
-    .hero::after {
-      content: '🌸🌺🌷🌸🌺🌷🌸🌺🌷🌸';
-      position: absolute;
-      bottom: -10px; left: 0; right: 0;
-      font-size: 40px;
-      opacity: 0.15;
-      letter-spacing: 20px;
-      line-height: 1;
-    }
-
-    .hero-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2px 32px 0px;
-      position: relative;
-      z-index: 1;
-      color: #fff;
-      text-align: left;
-      padding-left: 5%;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.2);
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 50px;
-      padding: 4px 18px;
-      font-size: 13px;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
-    }
-
-    .hero h1 {
-      font-size: clamp(21px, 3.8vw, 35px);
-      font-weight: 900;
-      letter-spacing: -1px;
-      line-height: 1.15;
-      margin-bottom: 0px;
-    }
-
-    .hero h1 em {
-      font-style: normal;
-      color: #ffd6e8;
-    }
-
-    .hero p {
-      font-size: 18px;
-      opacity: 0.92;
-      line-height: 1.8;
-      margin-bottom: 0;
-      font-weight: 300;
-    }
-
-    .hero-btns {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .hero-btn-main {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: #fff; color: #c2185b;
-      border-radius: 50px; padding: 15px 36px;
-      font-size: 16px; font-weight: 900;
-      text-decoration: none;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-      transition: transform 0.15s;
-    }
-    .hero-btn-main:hover { transform: translateY(-2px); }
-
-    .hero-btn-sub {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,0.15);
-      border: 2px solid rgba(255,255,255,0.5);
-      color: #fff; border-radius: 50px; padding: 13px 28px;
-      font-size: 15px; font-weight: 700;
-      text-decoration: none;
-      transition: background 0.15s;
-    }
-    .hero-btn-sub:hover { background: rgba(255,255,255,0.25); }
 
     /* ══════════════════════
        카테고리
@@ -367,14 +261,9 @@
 
       .header-btns { gap: 6px; max-width: 100%; }
       .hbtn { padding: 8px 4px; min-width: 0; flex: unset; border-radius: 14px; }
-      .hbtn .hbtn-icon { font-size: 20px; }
-      .hbtn .hbtn-label { font-size: 11px; }
-      .hbtn .hbtn-sub { font-size: 10px; }
-      .hbtn .hbtn-sub { font-size: 10px; }
-
-      .hero { min-height: 30px; }
-      .hero-inner { padding: 0px 16px; }
-      .hero p { font-size: 12px; line-height: 1.4; }
+      .hbtn .hbtn-icon { font-size: 18px; }
+      .hbtn .hbtn-label { font-size: 10px; }
+      .hbtn .hbtn-sub { font-size: 15px; }
 
       .cat-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -450,6 +339,11 @@
   <div class="notice-bar">
     <span>🌸 전국 당일 꽃배달 &nbsp;·&nbsp; 축하 · 개업 · 승진 · 근조 · 결혼 · 출산 · 꽃바구니 · 동양란 · 서양란 &nbsp;·&nbsp; 근조화환/축하화환 49,000원~ &nbsp;·&nbsp; 바로배송 · 무료배송 · 주말예약환영 &nbsp;·&nbsp; 📞 1533-6133 &nbsp;·&nbsp; 🌷 바로배송! 주말예약환영! 당신의 마음을 전해주세요~ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌸 전국 당일 꽃배달 &nbsp;·&nbsp; 축하 · 개업 · 승진 · 근조 · 결혼 · 출산 · 꽃바구니 · 동양란 · 서양란 &nbsp;·&nbsp; 근조화환/축하화환 49,000원~ &nbsp;·&nbsp; 바로배송 · 무료배송 · 주말예약환영 &nbsp;·&nbsp; 📞 1533-6133 &nbsp;·&nbsp; 🌷 바로배송! 주말예약환영! 당신의 마음을 전해주세요~</span>
   </div>
+
+  <!-- 최소 2시간 배송 강조 배너 -->
+  <div style="background:linear-gradient(135deg,#ffd600 0%,#ffeb3b 50%,#ffd600 100%); padding:10px 6px; text-align:center; border-top:1px solid #fbc02d; border-bottom:1px solid #fbc02d; white-space:nowrap; overflow:hidden;">
+    <span style="font-size:clamp(10px,2.85vw,14px); font-weight:900; color:#c2185b; letter-spacing:-0.3px;">⚡ 최소 2시간 배송 · 전국 무료배송 · 축하/근조화환 49,000원부터~</span>
+  </div>
   </div><!-- /상단 고정 영역 -->
 
   <!-- 카테고리 -->
@@ -520,6 +414,33 @@
       <br />
       📅 주말·공휴일 예약환영! 결혼식·행사가 집중되므로 미리 예약해 주시면 더욱 정성껏 준비해 드리겠습니다.
   </div>
+
+  <!-- FAQ (카카오톡 페이지 임베드) -->
+  <section class="section" style="padding:20px 16px; background:#fff;">
+    <div class="section-inner">
+      <div class="section-title" style="margin-bottom:14px;">
+        <h2 style="font-size:22px;">자주 묻는 질문 (FAQ)</h2>
+        <p style="font-size:13px;">주문 전 궁금한 점을 확인해 보세요</p>
+        <div class="bar"></div>
+      </div>
+      <div style="border:1.5px solid #f0e0e8; border-radius:16px; overflow:hidden; background:#fff; box-shadow:0 4px 16px rgba(194,24,91,0.08);">
+        <iframe src="http://pf.kakao.com/_jGycn/111229090"
+                style="width:100%; height:650px; border:0; display:block; background:#fff;"
+                title="썬더플라워 FAQ"
+                loading="lazy">
+        </iframe>
+      </div>
+      <div style="text-align:center; margin-top:14px; color:#888; font-size:12px;">
+        ※ 위 영역이 비어 보이면 아래 버튼을 눌러주세요.
+      </div>
+      <div style="text-align:center; margin-top:10px;">
+        <a href="http://pf.kakao.com/_jGycn/111229090" target="_self"
+           style="display:inline-block; background:linear-gradient(135deg,#FEE500,#FFD600); color:#3C1E1E; font-weight:900; font-size:15px; padding:12px 28px; border-radius:30px; text-decoration:none; box-shadow:0 4px 14px rgba(254,229,0,0.45);">
+          💬 FAQ 전체 보기
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- 푸터 -->
   <footer>
