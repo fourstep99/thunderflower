@@ -497,7 +497,7 @@
       img.src = '리뷰/' + encodeURIComponent(name) + '.png';
       img.alt = displayName(name);
       img.loading = 'lazy';
-      img.style.cssText = 'width:100%; aspect-ratio:1; object-fit:cover; object-position:center 25%; display:block; background:#fafafa;';
+      img.style.cssText = 'width:100%; aspect-ratio:1; object-fit:contain; display:block; background:#fafafa; padding:3px; box-sizing:border-box;';
       img.onerror = function(){ a.style.display = 'none'; };
       const label = document.createElement('div');
       label.textContent = displayName(name);
