@@ -490,14 +490,14 @@
       a.target = '_blank';
       a.rel = 'noopener';
       a.dataset.name = name;
-      // 박스 크기 - 컴팩트 (85 × 113)
-      a.style.cssText = 'display:flex; flex-direction:column; width:85px; overflow:hidden; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; transition:opacity 0.5s;';
+      // 박스 크기 - 더 컴팩트 (78 × 98 + 라벨)
+      a.style.cssText = 'display:flex; flex-direction:column; width:78px; overflow:hidden; border-radius:7px; box-shadow:0 1px 4px rgba(0,0,0,0.1); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; transition:opacity 0.5s;';
       a.addEventListener('click', function(){ if(window.nvTrack) nvTrack('4', 'review_' + name); });
       const img = document.createElement('img');
       img.src = '리뷰/' + encodeURIComponent(name) + '.png';
       img.alt = displayName(name);
       img.loading = 'lazy';
-      img.style.cssText = 'width:100%; aspect-ratio:3/4; object-fit:cover; object-position:center top; display:block; background:#fafafa;';
+      img.style.cssText = 'width:100%; aspect-ratio:4/5; object-fit:cover; object-position:center top; display:block; background:#fafafa;';
       img.onerror = function(){ a.style.display = 'none'; };
       const label = document.createElement('div');
       label.textContent = displayName(name);
