@@ -490,14 +490,14 @@
       a.target = '_blank';
       a.rel = 'noopener';
       a.dataset.name = name;
-      // 박스 작게 + 이미지 꽉 채우기 + 상품명 하단
-      a.style.cssText = 'display:flex; flex-direction:column; width:100px; overflow:hidden; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; transition:opacity 0.5s;';
+      // 박스 크기 - 세로형 비율 (꽃/화환 실제 비율에 맞춤)
+      a.style.cssText = 'display:flex; flex-direction:column; width:115px; overflow:hidden; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; transition:opacity 0.5s;';
       a.addEventListener('click', function(){ if(window.nvTrack) nvTrack('4', 'review_' + name); });
       const img = document.createElement('img');
       img.src = '리뷰/' + encodeURIComponent(name) + '.png';
       img.alt = displayName(name);
       img.loading = 'lazy';
-      img.style.cssText = 'width:100%; aspect-ratio:1; object-fit:contain; display:block; background:#fafafa;';
+      img.style.cssText = 'width:100%; aspect-ratio:3/4; object-fit:cover; object-position:center top; display:block; background:#fafafa;';
       img.onerror = function(){ a.style.display = 'none'; };
       const label = document.createElement('div');
       label.textContent = displayName(name);
