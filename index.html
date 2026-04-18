@@ -49,10 +49,11 @@
       100% { transform: translateX(-100%); }
     }
 
-    /* FAQ 플로팅 버튼 심박 (자연스러운 페이드) */
+    /* FAQ 플로팅 버튼 깜빡임 */
     @keyframes faqBlink {
-      0%, 100% { opacity: 1; }
-      50%      { opacity: 0.3; }
+      0%, 70%   { opacity: 1; }
+      80%, 90%  { opacity: 0.15; }
+      100%      { opacity: 1; }
     }
 
     /* 카카오톡 플로팅 버튼 흔들림 (주목도 ↑) */
@@ -451,19 +452,28 @@
     </div>
   </section>
 
-  <!-- 실제 배송 사진 (가로 스크롤) -->
+  <!-- 실제 배송 사진 (공지띠처럼 자동 마키 스크롤) -->
   <section style="padding:10px 0 6px; background:#fff;">
     <div style="text-align:center; margin-bottom:8px;">
       <h3 style="font-size:16px; font-weight:900; color:#c2185b; margin:0; letter-spacing:-0.3px;">💐 실제 배송 사진</h3>
     </div>
-    <div id="reviewGrid"
-         style="display:flex; gap:6px; overflow-x:auto; overflow-y:hidden;
-                padding:4px 12px 10px; scroll-snap-type:x proximity;
-                -webkit-overflow-scrolling:touch; scrollbar-width:none;"></div>
+    <div class="review-wrap" style="overflow:hidden; padding:4px 0 10px;">
+      <div id="reviewGrid" class="review-track" style="display:flex; gap:6px; width:max-content;"></div>
+    </div>
   </section>
   <style>
-    #reviewGrid::-webkit-scrollbar { display:none; }
-    #reviewGrid > a { flex:0 0 auto; scroll-snap-align:start; }
+    @keyframes reviewMarquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .review-track {
+      animation: reviewMarquee 80s linear infinite;
+    }
+    .review-wrap:hover .review-track,
+    .review-wrap:active .review-track {
+      animation-play-state: paused;
+    }
+    #reviewGrid > a { flex:0 0 auto; }
   </style>
   <script>
   (function(){
@@ -514,25 +524,11 @@
       return a;
     }
     const grid = document.getElementById('reviewGrid');
-    // 전체 35장 셔플 후 한 줄로 배치
+    // 전체 35장 셔플
     const ordered = shuffle(reviews);
+    // 카드를 2번 반복해서 append → translateX(-50%) 마키 루프가 끊김없이 이어짐
     ordered.forEach(n => grid.appendChild(buildCard(n)));
-
-    // 자동 가로 스크롤 (왼쪽으로 흐름). 사용자가 터치/드래그 중이면 멈춤
-    let autoScroll = true;
-    grid.addEventListener('pointerdown', () => { autoScroll = false; });
-    grid.addEventListener('pointerup', () => { setTimeout(() => autoScroll = true, 2000); });
-    grid.addEventListener('mouseleave', () => autoScroll = true);
-
-    setInterval(() => {
-      if (!autoScroll) return;
-      const maxScroll = grid.scrollWidth - grid.clientWidth;
-      if (grid.scrollLeft >= maxScroll - 1) {
-        grid.scrollLeft = 0;  // 끝까지 가면 처음으로
-      } else {
-        grid.scrollLeft += 1;  // 1px씩 매 프레임 흐르듯
-      }
-    }, 30);
+    ordered.forEach(n => grid.appendChild(buildCard(n)));
   })();
   </script>
 
@@ -614,7 +610,7 @@
             background:linear-gradient(135deg,#FEE500,#FFD600);
             color:#3C1E1E; text-decoration:none;
             box-shadow:0 6px 18px rgba(254,229,0,0.55), 0 2px 6px rgba(0,0,0,0.18);
-            animation:faqBlink 3s ease-in-out infinite;
+            animation:faqBlink 2.5s ease-in-out infinite;
             transition:transform 0.15s;">
     <span style="font-size:22px; line-height:1;">❓</span>
     <span style="font-size:10px; font-weight:900; margin-top:2px; letter-spacing:-0.3px;">FAQ</span>
