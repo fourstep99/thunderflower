@@ -452,27 +452,19 @@
     </div>
   </section>
 
-  <!-- 실제 배송 사진 (공지띠처럼 자동 마키 스크롤) -->
+  <!-- 실제 배송 사진 (자동 흐름 + 사용자 수동 스크롤 가능) -->
   <section style="padding:10px 0 6px; background:#fff;">
     <div style="text-align:center; margin-bottom:8px;">
       <h3 style="font-size:16px; font-weight:900; color:#c2185b; margin:0; letter-spacing:-0.3px;">💐 실제 배송 사진</h3>
     </div>
-    <div class="review-wrap" style="overflow:hidden; padding:4px 0 10px;">
-      <div id="reviewGrid" class="review-track" style="display:flex; gap:6px; width:max-content;"></div>
+    <div class="review-wrap"
+         style="overflow-x:auto; overflow-y:hidden; padding:4px 0 10px;
+                -webkit-overflow-scrolling:touch; scrollbar-width:none;">
+      <div id="reviewGrid" style="display:flex; gap:6px; width:max-content;"></div>
     </div>
   </section>
   <style>
-    @keyframes reviewMarquee {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    .review-track {
-      animation: reviewMarquee 80s linear infinite;
-    }
-    .review-wrap:hover .review-track,
-    .review-wrap:active .review-track {
-      animation-play-state: paused;
-    }
+    .review-wrap::-webkit-scrollbar { display:none; }
     #reviewGrid > a { flex:0 0 auto; }
   </style>
   <script>
@@ -524,11 +516,34 @@
       return a;
     }
     const grid = document.getElementById('reviewGrid');
-    // 전체 35장 셔플
+    const wrap = document.querySelector('.review-wrap');
+    // 전체 35장 셔플 + 2번 반복 (무한 루프 위해)
     const ordered = shuffle(reviews);
-    // 카드를 2번 반복해서 append → translateX(-50%) 마키 루프가 끊김없이 이어짐
     ordered.forEach(n => grid.appendChild(buildCard(n)));
     ordered.forEach(n => grid.appendChild(buildCard(n)));
+
+    // 자동 스크롤 (사용자가 만지면 일시정지 → 3초 후 자동 재개)
+    let paused = false;
+    let resumeTimer = null;
+    function pauseThenResume() {
+      paused = true;
+      if (resumeTimer) clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => { paused = false; }, 3000);
+    }
+    wrap.addEventListener('pointerdown', pauseThenResume);
+    wrap.addEventListener('wheel', pauseThenResume, { passive: true });
+    wrap.addEventListener('touchstart', pauseThenResume, { passive: true });
+
+    setInterval(() => {
+      if (paused) return;
+      const maxScroll = wrap.scrollWidth - wrap.clientWidth;
+      const halfScroll = maxScroll / 2;   // 2배 복제했으니 절반 지점에서 리셋 → 끊김 없음
+      if (wrap.scrollLeft >= halfScroll) {
+        wrap.scrollLeft = wrap.scrollLeft - halfScroll;
+      } else {
+        wrap.scrollLeft += 1;
+      }
+    }, 30);
   })();
   </script>
 
