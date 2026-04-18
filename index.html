@@ -49,11 +49,20 @@
       100% { transform: translateX(-100%); }
     }
 
-    /* FAQ 플로팅 버튼 깜빡임 */
+    /* FAQ 플로팅 버튼 심박 (자연스러운 페이드) */
     @keyframes faqBlink {
-      0%, 70%   { opacity: 1; }
-      80%, 90%  { opacity: 0.15; }
-      100%      { opacity: 1; }
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
+
+    /* 카카오톡 플로팅 버튼 흔들림 (주목도 ↑) */
+    @keyframes kakaoShake {
+      0%, 88%, 100% { transform: rotate(0); }
+      90%           { transform: rotate(-14deg); }
+      92%           { transform: rotate(14deg); }
+      94%           { transform: rotate(-10deg); }
+      96%           { transform: rotate(10deg); }
+      98%           { transform: rotate(0); }
     }
 
     /* 헤더 4버튼 순차 톡 튀기 애니메이션 (8초 주기, 2초 간격) */
@@ -442,13 +451,20 @@
     </div>
   </section>
 
-  <!-- 실제 배송 사진 (자동 랜덤 교체) -->
-  <section class="section" style="padding:10px 12px 4px; background:#fff;">
+  <!-- 실제 배송 사진 (가로 스크롤) -->
+  <section style="padding:10px 0 6px; background:#fff;">
     <div style="text-align:center; margin-bottom:8px;">
       <h3 style="font-size:16px; font-weight:900; color:#c2185b; margin:0; letter-spacing:-0.3px;">💐 실제 배송 사진</h3>
     </div>
-    <div id="reviewGrid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:5px;"></div>
+    <div id="reviewGrid"
+         style="display:flex; gap:6px; overflow-x:auto; overflow-y:hidden;
+                padding:4px 12px 10px; scroll-snap-type:x proximity;
+                -webkit-overflow-scrolling:touch; scrollbar-width:none;"></div>
   </section>
+  <style>
+    #reviewGrid::-webkit-scrollbar { display:none; }
+    #reviewGrid > a { flex:0 0 auto; scroll-snap-align:start; }
+  </style>
   <script>
   (function(){
     const reviews = [
@@ -472,21 +488,19 @@
       a.target = '_blank';
       a.rel = 'noopener';
       a.dataset.name = name;
-      a.style.cssText = 'display:flex; flex-direction:column; align-items:center; overflow:hidden; border-radius:10px; box-shadow:0 2px 8px rgba(194,24,91,0.12); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; padding:6px 4px 5px; transition:opacity 0.5s;';
+      // 박스 작게 + 이미지 꽉 채우기 + 상품명 하단
+      a.style.cssText = 'display:flex; flex-direction:column; width:100px; overflow:hidden; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; transition:opacity 0.5s;';
       a.addEventListener('click', function(){ if(window.nvTrack) nvTrack('4', 'review_' + name); });
-      const imgBox = document.createElement('div');
-      imgBox.style.cssText = 'width:62%; aspect-ratio:1; overflow:hidden; background:#fafafa; border-radius:8px;';
       const img = document.createElement('img');
       img.src = '리뷰/' + encodeURIComponent(name) + '.png';
       img.alt = displayName(name);
       img.loading = 'lazy';
-      img.style.cssText = 'width:100%; height:100%; object-fit:cover; display:block;';
+      img.style.cssText = 'width:100%; aspect-ratio:1; object-fit:cover; display:block;';
       img.onerror = function(){ a.style.display = 'none'; };
-      imgBox.appendChild(img);
       const label = document.createElement('div');
       label.textContent = displayName(name);
-      label.style.cssText = 'margin-top:5px; font-size:13px; font-weight:900; color:#222; text-align:center; line-height:1.2; letter-spacing:-0.4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;';
-      a.appendChild(imgBox);
+      label.style.cssText = 'padding:4px 2px; font-size:11px; font-weight:800; color:#222; text-align:center; line-height:1.15; letter-spacing:-0.4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; background:#fef5f9;';
+      a.appendChild(img);
       a.appendChild(label);
       return a;
     }
@@ -499,39 +513,26 @@
       }
       return a;
     }
-    const COUNT = 6;
     const grid = document.getElementById('reviewGrid');
-    let current = shuffle(reviews).slice(0, COUNT);
-    current.forEach(n => grid.appendChild(buildCard(n)));
+    // 전체 35장 셔플 후 한 줄로 배치
+    const ordered = shuffle(reviews);
+    ordered.forEach(n => grid.appendChild(buildCard(n)));
 
-    // 2.5초마다 2칸씩 새 이미지로 교체 (페이드)
+    // 자동 가로 스크롤 (왼쪽으로 흐름). 사용자가 터치/드래그 중이면 멈춤
+    let autoScroll = true;
+    grid.addEventListener('pointerdown', () => { autoScroll = false; });
+    grid.addEventListener('pointerup', () => { setTimeout(() => autoScroll = true, 2000); });
+    grid.addEventListener('mouseleave', () => autoScroll = true);
+
     setInterval(() => {
-      // 다른 인덱스 2개 선택
-      const indices = [];
-      while (indices.length < 2) {
-        const i = Math.floor(Math.random() * COUNT);
-        if (!indices.includes(i)) indices.push(i);
+      if (!autoScroll) return;
+      const maxScroll = grid.scrollWidth - grid.clientWidth;
+      if (grid.scrollLeft >= maxScroll - 1) {
+        grid.scrollLeft = 0;  // 끝까지 가면 처음으로
+      } else {
+        grid.scrollLeft += 1;  // 1px씩 매 프레임 흐르듯
       }
-      // 현재 표시중이 아닌 후보 중 2개 선택
-      const candidates = reviews.filter(r => !current.includes(r));
-      if (candidates.length < 2) return;
-      const news = [];
-      while (news.length < 2) {
-        const c = candidates[Math.floor(Math.random() * candidates.length)];
-        if (!news.includes(c)) news.push(c);
-      }
-      // 페이드 아웃
-      indices.forEach(i => grid.children[i].style.opacity = '0');
-      setTimeout(() => {
-        indices.forEach((i, k) => {
-          const newCard = buildCard(news[k]);
-          newCard.style.opacity = '0';
-          grid.replaceChild(newCard, grid.children[i]);
-          requestAnimationFrame(() => { newCard.style.opacity = '1'; });
-          current[i] = news[k];
-        });
-      }, 500);
-    }, 2500);
+    }, 30);
   })();
   </script>
 
@@ -588,6 +589,22 @@
     </div>
   </footer>
 
+  <!-- 카카오톡 문의 플로팅 버튼 (우하단 고정, 흔들림) -->
+  <a href="http://pf.kakao.com/_jGycn/chat" target="_blank" rel="noopener"
+     aria-label="카카오톡 문의"
+     onclick="if(window.nvTrack)nvTrack('2','kakao_float')"
+     style="position:fixed; right:16px; bottom:94px; z-index:201;
+            display:inline-flex; flex-direction:column; align-items:center; justify-content:center;
+            width:64px; height:64px; border-radius:50%;
+            background:linear-gradient(135deg,#FEE500,#FFD600);
+            color:#3C1E1E; text-decoration:none;
+            box-shadow:0 6px 18px rgba(254,229,0,0.55), 0 2px 6px rgba(0,0,0,0.18);
+            animation:kakaoShake 3.5s ease-in-out infinite;
+            transition:transform 0.15s;">
+    <span style="font-size:24px; line-height:1;">💬</span>
+    <span style="font-size:10px; font-weight:900; margin-top:2px; letter-spacing:-0.3px;">카톡문의</span>
+  </a>
+
   <!-- FAQ 플로팅 버튼 (우하단 고정, 깜빡임) -->
   <a href="http://pf.kakao.com/_jGycn/111229090" target="_self"
      aria-label="자주 묻는 질문 FAQ"
@@ -597,7 +614,7 @@
             background:linear-gradient(135deg,#FEE500,#FFD600);
             color:#3C1E1E; text-decoration:none;
             box-shadow:0 6px 18px rgba(254,229,0,0.55), 0 2px 6px rgba(0,0,0,0.18);
-            animation:faqBlink 2.5s ease-in-out infinite;
+            animation:faqBlink 3s ease-in-out infinite;
             transition:transform 0.15s;">
     <span style="font-size:22px; line-height:1;">❓</span>
     <span style="font-size:10px; font-weight:900; margin-top:2px; letter-spacing:-0.3px;">FAQ</span>
