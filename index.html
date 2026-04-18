@@ -490,8 +490,8 @@
       a.target = '_blank';
       a.rel = 'noopener';
       a.dataset.name = name;
-      // 박스 크기 - 이전 큰 버전에서 축소 (100 × 133)
-      a.style.cssText = 'display:flex; flex-direction:column; width:100px; overflow:hidden; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; transition:opacity 0.5s;';
+      // 박스 크기 - 컴팩트 (85 × 113)
+      a.style.cssText = 'display:flex; flex-direction:column; width:85px; overflow:hidden; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; transition:opacity 0.5s;';
       a.addEventListener('click', function(){ if(window.nvTrack) nvTrack('4', 'review_' + name); });
       const img = document.createElement('img');
       img.src = '리뷰/' + encodeURIComponent(name) + '.png';
@@ -501,7 +501,7 @@
       img.onerror = function(){ a.style.display = 'none'; };
       const label = document.createElement('div');
       label.textContent = displayName(name);
-      label.style.cssText = 'padding:4px 2px; font-size:11px; font-weight:800; color:#222; text-align:center; line-height:1.15; letter-spacing:-0.4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; background:#fef5f9;';
+      label.style.cssText = 'padding:5px 3px 6px; font-size:10px; font-weight:800; color:#222; text-align:center; line-height:1.2; letter-spacing:-0.5px; white-space:nowrap; overflow:visible; background:#fef5f9; flex-shrink:0;';
       a.appendChild(img);
       a.appendChild(label);
       return a;
