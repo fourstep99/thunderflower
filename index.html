@@ -533,7 +533,7 @@
     }
     function buildCard(name){
       const a = document.createElement('a');
-      a.href = '리뷰/' + encodeURIComponent(name) + '.png';
+      a.href = '리뷰/' + encodeURIComponent(name) + '.png?v=2';
       a.target = '_blank';
       a.rel = 'noopener';
       a.dataset.name = name;
@@ -544,7 +544,7 @@
         if(window.nvTrack) nvTrack('4', 'review_' + name);
       });
       const img = document.createElement('img');
-      img.src = '리뷰/' + encodeURIComponent(name) + '.png';
+      img.src = '리뷰/' + encodeURIComponent(name) + '.png?v=2';
       img.alt = displayName(name);
       img.loading = 'lazy';
       img.style.cssText = 'width:100%; aspect-ratio:2/3; object-fit:cover; object-position:center top; display:block; background:#fafafa; filter:brightness(1.03) saturate(1.02);';
