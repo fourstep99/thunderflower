@@ -358,6 +358,53 @@
         }
       } catch(e) {}
     }
+
+    // ─── 홈페이지 유입 로그 (JSONBin) ───
+    (function(){
+      var BIN='69e47b6baaba88219714e7f7';
+      var P1='$2a$10$UboSdlQM4h4vjy95I';
+      var P2='xJDRuxna5PRwb1ra4X.kD/kwlc1msr2wqFxK';
+      var KEY=P1+P2;
+      var URL_GET='https://api.jsonbin.io/v3/b/'+BIN+'/latest';
+      var URL_PUT='https://api.jsonbin.io/v3/b/'+BIN;
+      function getSource(){
+        var ref=document.referrer;
+        if(!ref) return '직접유입';
+        if(/naver\.com/.test(ref)) return '네이버';
+        if(/google\./.test(ref)) return '구글';
+        if(/kakao/.test(ref)) return '카카오';
+        if(/daum/.test(ref)) return '다음';
+        return ref.substring(0,60);
+      }
+      function getKeyword(){
+        var p=new URLSearchParams(location.search);
+        return p.get('n_query')||p.get('query')||p.get('q')||p.get('kw')||'';
+      }
+      function getDevice(){
+        return /Mobi|Android|iPhone|iPad/.test(navigator.userAgent)?'Mobile':'PC';
+      }
+      window.logVisit=function(buttonName){
+        try {
+          var now=new Date();
+          var d=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+          var t=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
+          var ev={date:d,time:t,button:buttonName,source:getSource(),keyword:getKeyword(),device:getDevice(),ua:navigator.userAgent.substring(0,80)};
+          fetch(URL_GET,{headers:{'X-Master-Key':KEY}})
+            .then(function(r){return r.json();})
+            .then(function(data){
+              var logs=(data.record&&data.record.logs)||[];
+              logs.push(ev);
+              if(logs.length>2000) logs=logs.slice(-2000);
+              fetch(URL_PUT,{
+                method:'PUT',
+                keepalive:true,
+                headers:{'Content-Type':'application/json','X-Master-Key':KEY},
+                body:JSON.stringify({logs:logs})
+              });
+            }).catch(function(){});
+        } catch(e){}
+      };
+    })();
   </script>
 </head>
 <body>
@@ -384,19 +431,19 @@
       <div style="width:100%; max-width:400px; height:1px; background:linear-gradient(90deg,transparent,#e0e0e0,transparent);"></div>
       <!-- 3버튼 -->
       <div class="header-btns">
-        <a href="tel:15336133" class="hbtn hbtn-tel" onclick="nvTrack('3','call')">
+        <a href="tel:15336133" class="hbtn hbtn-tel" onclick="logVisit('전화주문');nvTrack('3','call')">
           <span class="hbtn-top"><span class="hbtn-icon">📞</span><span class="hbtn-label">전화 주문</span></span>
           <span class="hbtn-sub">1533-6133</span>
         </a>
-        <a href="sms:15336133" class="hbtn hbtn-sms" onclick="nvTrack('4','sms')">
+        <a href="sms:15336133" class="hbtn hbtn-sms" onclick="logVisit('문자주문');nvTrack('4','sms')">
           <span class="hbtn-top"><span class="hbtn-icon">✉️</span><span class="hbtn-label">문자 주문</span></span>
           <span class="hbtn-sub">1533-6133</span>
         </a>
-        <a href="https://꽃서비스.com/?shopid=thunderflower" class="hbtn hbtn-shop hbtn-stack" target="_blank" onclick="nvTrack('4','shop')">
+        <a href="https://꽃서비스.com/?shopid=thunderflower" class="hbtn hbtn-shop hbtn-stack" target="_blank" onclick="logVisit('쇼핑몰');nvTrack('4','shop')">
           <span class="hbtn-icon">🛒</span>
           <span class="hbtn-label">쇼핑몰 주문</span>
         </a>
-        <a href="http://pf.kakao.com/_jGycn/chat" class="hbtn hbtn-kakao hbtn-stack" target="_blank" onclick="nvTrack('2','kakao')">
+        <a href="http://pf.kakao.com/_jGycn/chat" class="hbtn hbtn-kakao hbtn-stack" target="_blank" onclick="logVisit('카톡주문');nvTrack('2','kakao')">
           <span class="hbtn-icon">💬</span>
           <span class="hbtn-label">카카오톡 주문</span>
         </a>
@@ -418,32 +465,32 @@
   <section class="section" style="padding-top:4px; padding-bottom:2px;">
     <div class="section-inner">
       <div class="cat-grid" style="margin-top: 0;">
-        <a href="https://꽃서비스.com/products/product-category/55?shopid=thunderflower" class="cat-card" onclick="nvTrack('5','cat_chukha')">
+        <a href="https://꽃서비스.com/products/product-category/55?shopid=thunderflower" class="cat-card" onclick="logVisit('카테고리_축하결혼');nvTrack('5','cat_chukha')">
           <img src="img_chukha.png" alt="축하/결혼" class="cat-img" />
           <div class="cat-name">축하 / 결혼</div>
           <div class="cat-desc" style="color:#c2185b; font-weight:700;">49,000원~</div>
         </a>
-        <a href="https://꽃서비스.com/products/product-category/56?shopid=thunderflower" class="cat-card" onclick="nvTrack('5','cat_gunjo')">
+        <a href="https://꽃서비스.com/products/product-category/56?shopid=thunderflower" class="cat-card" onclick="logVisit('카테고리_근조추모');nvTrack('5','cat_gunjo')">
           <img src="img_gunjo.png" alt="근조/추모" class="cat-img" />
           <div class="cat-name">근조 / 추모</div>
           <div class="cat-desc" style="color:#c2185b; font-weight:700;">49,000원~</div>
         </a>
-        <a href="https://꽃서비스.com/products/product-category/57?shopid=thunderflower" class="cat-card" onclick="nvTrack('5','cat_gwanyeop')">
+        <a href="https://꽃서비스.com/products/product-category/57?shopid=thunderflower" class="cat-card" onclick="logVisit('카테고리_관엽');nvTrack('5','cat_gwanyeop')">
           <img src="img_gwanyeop.png" alt="관엽/공기정화" class="cat-img" />
           <div class="cat-name">관엽 / 공기정화</div>
           <div class="cat-desc">개업 · 승진 · 인테리어</div>
         </a>
-        <a href="https://꽃서비스.com/products/product-category/58?shopid=thunderflower" class="cat-card" onclick="nvTrack('5','cat_nan')">
+        <a href="https://꽃서비스.com/products/product-category/58?shopid=thunderflower" class="cat-card" onclick="logVisit('카테고리_동서양란');nvTrack('5','cat_nan')">
           <img src="img_nan.png" alt="동/서양란" class="cat-img" />
           <div class="cat-name">동 / 서양란</div>
           <div class="cat-desc">승진 · 품격 있는 선물</div>
         </a>
-        <a href="https://꽃서비스.com/products/product-category/59?shopid=thunderflower" class="cat-card" onclick="nvTrack('5','cat_basket')">
+        <a href="https://꽃서비스.com/products/product-category/59?shopid=thunderflower" class="cat-card" onclick="logVisit('카테고리_꽃바구니');nvTrack('5','cat_basket')">
           <img src="img_basket.png" alt="꽃바구니/꽃다발" class="cat-img" />
           <div class="cat-name">꽃바구니 / 꽃다발</div>
           <div class="cat-desc">사랑을 담은 꽃선물</div>
         </a>
-        <a href="https://꽃서비스.com/products/product-category/60?shopid=thunderflower" class="cat-card" onclick="nvTrack('5','cat_chulsan')">
+        <a href="https://꽃서비스.com/products/product-category/60?shopid=thunderflower" class="cat-card" onclick="logVisit('카테고리_출산');nvTrack('5','cat_chulsan')">
           <img src="img_chulsan.png" alt="출산" class="cat-img" />
           <div class="cat-name">출산</div>
           <div class="cat-desc">새 생명 탄생 축하</div>
@@ -492,7 +539,10 @@
       a.dataset.name = name;
       // 박스 크기 - 더 컴팩트 (78 × 98 + 라벨)
       a.style.cssText = 'display:flex; flex-direction:column; width:78px; overflow:hidden; border-radius:7px; box-shadow:0 1px 4px rgba(0,0,0,0.1); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; transition:opacity 0.5s;';
-      a.addEventListener('click', function(){ if(window.nvTrack) nvTrack('4', 'review_' + name); });
+      a.addEventListener('click', function(){
+        if(window.logVisit) logVisit('리뷰_'+name);
+        if(window.nvTrack) nvTrack('4', 'review_' + name);
+      });
       const img = document.createElement('img');
       img.src = '리뷰/' + encodeURIComponent(name) + '.png';
       img.alt = displayName(name);
@@ -603,7 +653,7 @@
   <!-- 카카오톡 문의 플로팅 버튼 (우하단 고정, 흔들림) -->
   <a href="http://pf.kakao.com/_jGycn/chat" target="_blank" rel="noopener"
      aria-label="카카오톡 문의"
-     onclick="if(window.nvTrack)nvTrack('2','kakao_float')"
+     onclick="if(window.logVisit)logVisit('카톡플로팅');if(window.nvTrack)nvTrack('2','kakao_float')"
      style="position:fixed; right:16px; bottom:94px; z-index:201;
             display:inline-flex; flex-direction:column; align-items:center; justify-content:center;
             width:64px; height:64px; border-radius:50%;
