@@ -531,6 +531,41 @@
       n = n.replace(/(\D)\d+$/, '$1');
       return n;
     }
+    // 상품명 → 꽃서비스닷컴 카테고리 매핑
+    function getProductCategory(name){
+      if (/호접란|동양란|서양란|만천홍|철골|황룡금|황용금|금기|금공주|엘레강스|삼색조|포춘|선셋|대국|핑크호접/.test(name))
+        return {id: 58, label: '동/서양란'};
+      if (/금전수|스투키|파키라|행운목|크로톤|뱅갈|녹보수|가지마루|해피트리|천냥금|여인초|극락조|드라세나|콩고|유카|셀렘|콤팩타|멜라니|마리안느|드라코|자바|아레카|안스리움|크루시아|떡갈|고무나무|만냥금|산세베리아|스파트필름|아가베|모듬식물|황금죽|탁상/.test(name))
+        return {id: 57, label: '관엽/공기정화'};
+      if (/축하/.test(name)) return {id: 55, label: '축하/결혼'};
+      if (/근조/.test(name)) return {id: 56, label: '근조/추모'};
+      return {id: null, label: ''};
+    }
+    // 모달 열기
+    function openReviewModal(name){
+      const modal = document.getElementById('reviewModal');
+      const img = document.getElementById('modalImage');
+      const title = document.getElementById('modalTitle');
+      const catBtn = document.getElementById('modalCatBtn');
+      const disp = displayName(name);
+      const cat = getProductCategory(name);
+      img.src = '리뷰/' + encodeURIComponent(name) + '.png?v=4';
+      title.textContent = disp;
+      if (cat.id){
+        catBtn.href = 'https://꽃서비스.com/products/product-category/' + cat.id + '?shopid=thunderflower';
+        catBtn.innerHTML = '🛒 ' + cat.label + ' 상품 보기';
+        catBtn.style.display = '';
+      } else {
+        catBtn.style.display = 'none';
+      }
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    window.closeReviewModal = function(){
+      document.getElementById('reviewModal').style.display = 'none';
+      document.body.style.overflow = '';
+    };
+
     function buildCard(name){
       const a = document.createElement('a');
       a.href = '리뷰/' + encodeURIComponent(name) + '.png?v=4';
@@ -539,9 +574,11 @@
       a.dataset.name = name;
       // 박스 크기 - 더 컴팩트 (78 × 98 + 라벨)
       a.style.cssText = 'display:flex; flex-direction:column; width:78px; overflow:hidden; border-radius:7px; box-shadow:0 1px 4px rgba(0,0,0,0.1); border:1px solid #f0e0e8; background:#fff; text-decoration:none; color:inherit; transition:opacity 0.5s;';
-      a.addEventListener('click', function(){
+      a.addEventListener('click', function(e){
+        e.preventDefault();  // 원본 이미지 새 탭 열림 차단
         if(window.logVisit) logVisit('리뷰_'+name);
         if(window.nvTrack) nvTrack('4', 'review_' + name);
+        openReviewModal(name);
       });
       const img = document.createElement('img');
       img.src = '리뷰/' + encodeURIComponent(name) + '.png?v=4';
@@ -649,6 +686,44 @@
       </div>
     </div>
   </footer>
+
+  <!-- 리뷰 이미지 모달 (큰 이미지 + CTA 버튼) -->
+  <div id="reviewModal" onclick="if(event.target===this)closeReviewModal()"
+       style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:9998;
+              align-items:center; justify-content:center; padding:12px;">
+    <div style="position:relative; max-width:480px; width:100%; max-height:95vh; overflow-y:auto;
+                background:#fff; border-radius:14px; padding:16px 14px; box-shadow:0 10px 40px rgba(0,0,0,0.5);">
+      <button onclick="closeReviewModal()"
+              style="position:absolute; top:8px; right:10px; background:#fff; border:none;
+                     font-size:22px; cursor:pointer; color:#666; width:34px; height:34px;
+                     border-radius:50%; box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:2;">✕</button>
+      <h3 id="modalTitle" style="margin:0 0 10px; text-align:center; font-size:17px; font-weight:900; color:#c2185b;">상품명</h3>
+      <img id="modalImage" src="" alt=""
+           style="width:100%; max-height:55vh; object-fit:contain; border-radius:8px; background:#fafafa; display:block;" />
+      <div style="margin-top:12px; font-size:13px; color:#888; text-align:center;">💐 이 상품이 마음에 드시나요?</div>
+      <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
+        <a id="modalCatBtn" href="#" target="_blank" rel="noopener"
+           onclick="if(window.logVisit)logVisit('리뷰상품보기');if(window.nvTrack)nvTrack('5','review_product')"
+           style="display:flex; align-items:center; justify-content:center; gap:8px;
+                  background:linear-gradient(135deg,#1565c0,#0d47a1); color:#fff; padding:12px;
+                  border-radius:10px; text-decoration:none; font-weight:900; font-size:15px;
+                  box-shadow:0 4px 12px rgba(13,71,161,0.3);">🛒 이 상품 보기</a>
+        <a href="tel:15336133"
+           onclick="logVisit('리뷰_전화주문');nvTrack('3','call')"
+           style="display:flex; align-items:center; justify-content:center; gap:8px;
+                  background:linear-gradient(135deg,#c2185b,#e91e8c); color:#fff; padding:12px;
+                  border-radius:10px; text-decoration:none; font-weight:900; font-size:15px;
+                  box-shadow:0 4px 12px rgba(194,24,91,0.3);">📞 전화 주문 · 1533-6133</a>
+        <a href="http://pf.kakao.com/_jGycn/chat" target="_blank" rel="noopener"
+           onclick="logVisit('리뷰_카톡문의');nvTrack('2','kakao')"
+           style="display:flex; align-items:center; justify-content:center; gap:8px;
+                  background:linear-gradient(135deg,#FEE500,#FFD600); color:#3C1E1E; padding:12px;
+                  border-radius:10px; text-decoration:none; font-weight:900; font-size:15px;
+                  box-shadow:0 4px 12px rgba(254,229,0,0.4);">💬 카톡 5초 문의</a>
+      </div>
+      <div style="margin-top:10px; text-align:center; font-size:11px; color:#aaa;">화환 49,000원~ · 화분 60,000원~ · 전국 당일배송</div>
+    </div>
+  </div>
 
   <!-- 카카오톡 문의 플로팅 버튼 (우하단 고정, 흔들림) -->
   <a href="http://pf.kakao.com/_jGycn/chat" target="_blank" rel="noopener"
