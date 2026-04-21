@@ -370,6 +370,7 @@
       function getSource(){
         var ref=document.referrer;
         if(!ref) return '직접유입';
+        if(/acecounter\.com/.test(ref)) return '네이버광고';
         if(/naver\.com/.test(ref)) return '네이버';
         if(/google\./.test(ref)) return '구글';
         if(/kakao/.test(ref)) return '카카오';
