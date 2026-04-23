@@ -405,6 +405,10 @@
             }).catch(function(){});
         } catch(e){}
       };
+      // 페이지 로드시 방문 자동 기록 (버튼 클릭 전 이탈자도 카운트)
+      if(document.readyState==='loading'){
+        document.addEventListener('DOMContentLoaded', function(){ window.logVisit('페이지방문'); });
+      } else { window.logVisit('페이지방문'); }
     })();
   </script>
 </head>
