@@ -67,16 +67,11 @@
       50%, 97% { opacity: 1; }
       100%     { opacity: 0; }
     }
-    /* 뿜뿜 글로우 (빨간 그림자 박동) */
-    @keyframes pulseGlow {
-      0%, 100% { filter: drop-shadow(0 0 0 transparent); }
-      50%      { filter: drop-shadow(0 0 6px rgba(255,23,68,0.75)); }
-    }
     .msg-a {
-      animation: msgShowA 8s ease-in-out infinite, pulseGlow 0.8s ease-in-out infinite;
+      animation: msgShowA 8s ease-in-out infinite;
     }
     .msg-b {
-      animation: msgShowB 8s ease-in-out infinite, pulseGlow 0.8s ease-in-out infinite;
+      animation: msgShowB 8s ease-in-out infinite;
     }
 
     /* 카카오톡 플로팅 버튼 흔들림 (주목도 ↑) */
@@ -484,10 +479,10 @@
   </div>
 
   <!-- 최소 2시간 배송 강조 배너 -->
-  <div style="background:linear-gradient(135deg,#ffd600 0%,#ffeb3b 50%,#ffd600 100%); padding:4px 12px; text-align:center; border-top:1px solid #fbc02d; border-bottom:1px solid #fbc02d; position:relative;">
-    <div style="max-width:1060px; margin:0 auto; position:relative; height:38px;">
+  <div style="background:linear-gradient(135deg,#ffd600 0%,#ffeb3b 50%,#ffd600 100%); padding:3px 12px 1px; text-align:center; border-top:1px solid #fbc02d; border-bottom:1px solid #fbc02d; position:relative;">
+    <div style="max-width:1060px; margin:0 auto; position:relative; height:32px;">
       <!-- 메시지 A: 기본 안내 -->
-      <svg class="msg-a" viewBox="0 0 480 34" preserveAspectRatio="xMidYMid meet" style="position:absolute; left:0; right:0; top:0; width:100%; height:auto; max-height:44px;">
+      <svg class="msg-a" viewBox="0 0 480 34" preserveAspectRatio="xMidYMid meet" style="position:absolute; left:0; right:0; top:0; width:100%; height:auto; max-height:36px;">
         <g transform="matrix(1 0 0 1.5 0 0)">
           <g transform="translate(4 1) rotate(-18 12 12) scale(0.85)">
             <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="#c2185b" stroke="#c2185b" stroke-width="0.6" stroke-linejoin="round"/>
@@ -496,7 +491,7 @@
         </g>
       </svg>
       <!-- 메시지 B: 토요일 예식 안내 -->
-      <svg class="msg-b" viewBox="0 0 480 34" preserveAspectRatio="xMidYMid meet" style="position:absolute; left:0; right:0; top:0; width:100%; height:auto; max-height:44px; opacity:0;">
+      <svg class="msg-b" viewBox="0 0 480 34" preserveAspectRatio="xMidYMid meet" style="position:absolute; left:0; right:0; top:0; width:100%; height:auto; max-height:36px; opacity:0;">
         <g transform="matrix(1 0 0 1.5 0 0)">
           <text x="240" y="17" text-anchor="middle" font-weight="900" fill="#c2185b" font-size="18" textLength="460" lengthAdjust="spacingAndGlyphs" style="font-family:'Noto Sans KR',sans-serif;">⏰ 토요일 오전 예식 — 금요일까지 예약 필수 ⏰</text>
         </g>
@@ -593,7 +588,7 @@
       const catBtn = document.getElementById('modalCatBtn');
       const disp = displayName(name);
       const cat = getProductCategory(name);
-      img.src = '리뷰/' + encodeURIComponent(name) + '.png?v=4';
+      img.src = '리뷰/' + encodeURIComponent(name) + '.jpg?v=5';
       title.textContent = disp;
       if (cat.id){
         catBtn.href = 'https://꽃서비스.com/products/product-category/' + cat.id + '?shopid=thunderflower';
@@ -612,7 +607,7 @@
 
     function buildCard(name){
       const a = document.createElement('a');
-      a.href = '리뷰/' + encodeURIComponent(name) + '.png?v=4';
+      a.href = '리뷰/' + encodeURIComponent(name) + '.jpg?v=5';
       a.target = '_blank';
       a.rel = 'noopener';
       a.dataset.name = name;
@@ -625,7 +620,7 @@
         openReviewModal(name);
       });
       const img = document.createElement('img');
-      img.src = '리뷰/' + encodeURIComponent(name) + '.png?v=4';
+      img.src = '리뷰/' + encodeURIComponent(name) + '.jpg?v=5';
       img.alt = displayName(name);
       img.loading = 'lazy';
       img.style.cssText = 'width:100%; aspect-ratio:2/3; object-fit:cover; object-position:center top; display:block; background:#fafafa; filter:brightness(1.02) saturate(1.02);';
@@ -773,14 +768,14 @@
      aria-label="영업시간 안내"
      style="position:fixed; right:10px; top:10px; z-index:300;
             display:inline-flex; flex-direction:column; align-items:center; justify-content:center;
-            width:54px; height:54px; border-radius:50%;
+            width:46px; height:46px; border-radius:50%;
             background:linear-gradient(135deg,#FEE500,#FFD600);
             color:#3C1E1E; text-decoration:none;
             box-shadow:0 4px 14px rgba(254,229,0,0.55), 0 2px 6px rgba(0,0,0,0.15);
             animation:faqBlink 2.5s ease-in-out infinite;">
-    <span style="font-size:18px; line-height:1;">🕐</span>
-    <span style="font-size:8px; font-weight:900; margin-top:1px; letter-spacing:-0.4px;">영업시간</span>
-    <span style="font-size:8px; font-weight:900; letter-spacing:-0.4px;">안내</span>
+    <span style="font-size:14px; line-height:1;">🕐</span>
+    <span style="font-size:9px; font-weight:900; margin-top:1px; letter-spacing:-0.5px;">영업시간</span>
+    <span style="font-size:9px; font-weight:900; letter-spacing:-0.5px;">안내</span>
   </a>
 
 </body>
