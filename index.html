@@ -56,17 +56,27 @@
       100%      { opacity: 1; }
     }
 
-    /* 공지띠 강조 문구 뿜뿜 (확대+빨강 글로우) */
-    @keyframes ppumppum {
-      0%, 100% { transform: scale(1); color: #c2185b; text-shadow: none; }
-      50%      { transform: scale(1.18); color: #ff1744; text-shadow: 0 0 10px rgba(255,23,68,0.7), 0 0 4px rgba(255,255,255,0.9); }
+    /* 노란 배너 메시지 교차 표시 (8초 주기, 각 4초) */
+    @keyframes msgShowA {
+      0%, 47%  { opacity: 1; }
+      50%, 97% { opacity: 0; }
+      100%     { opacity: 1; }
     }
-    .ppumppum {
-      display: inline-block;
-      animation: ppumppum 0.7s ease-in-out infinite;
-      font-weight: 900;
-      padding: 0 4px;
-      transform-origin: center;
+    @keyframes msgShowB {
+      0%, 47%  { opacity: 0; }
+      50%, 97% { opacity: 1; }
+      100%     { opacity: 0; }
+    }
+    /* 뿜뿜 글로우 (빨간 그림자 박동) */
+    @keyframes pulseGlow {
+      0%, 100% { filter: drop-shadow(0 0 0 transparent); }
+      50%      { filter: drop-shadow(0 0 6px rgba(255,23,68,0.75)); }
+    }
+    .msg-a {
+      animation: msgShowA 8s ease-in-out infinite, pulseGlow 0.8s ease-in-out infinite;
+    }
+    .msg-b {
+      animation: msgShowB 8s ease-in-out infinite, pulseGlow 0.8s ease-in-out infinite;
     }
 
     /* 카카오톡 플로팅 버튼 흔들림 (주목도 ↑) */
@@ -470,19 +480,25 @@
   </header>
   <!-- 공지 띠 -->
   <div class="notice-bar">
-    <span>🌸 전국 당일 꽃배달 &nbsp;·&nbsp; 축하 · 개업 · 승진 · 근조 · 결혼 · 동양란 · 서양란 &nbsp;·&nbsp; 바로배송 · 무료배송 · 주말예약환영 &nbsp;·&nbsp; 📞 1533-6133 &nbsp;·&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🌷 고객님의 따뜻한 마음을 정성 가득히 전해드립니다. &nbsp;·&nbsp; <span class="ppumppum">⏰ 토요일 오전 예식 — 금요일까지 예약 필수 ⏰</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌸 전국 당일 꽃배달 &nbsp;·&nbsp; 축하 · 개업 · 승진 · 근조 · 결혼 · 동양란 · 서양란 &nbsp;·&nbsp; 바로배송 · 무료배송 · 주말예약환영 &nbsp;·&nbsp; 📞 1533-6133 &nbsp;·&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🌷 고객님의 따뜻한 마음을 정성 가득히 전해드립니다. &nbsp;·&nbsp; <span class="ppumppum">⏰ 토요일 오전 예식 — 금요일까지 예약 필수 ⏰</span></span>
+    <span>🌸 전국 당일 꽃배달 &nbsp;·&nbsp; 축하 · 개업 · 승진 · 근조 · 결혼 · 동양란 · 서양란 &nbsp;·&nbsp; 바로배송 · 무료배송 · 주말예약환영 &nbsp;·&nbsp; 📞 1533-6133 &nbsp;·&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🌷 고객님의 따뜻한 마음을 정성 가득히 전해드립니다.  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌸 전국 당일 꽃배달 &nbsp;·&nbsp; 축하 · 개업 · 승진 · 근조 · 결혼 · 동양란 · 서양란 &nbsp;·&nbsp; 바로배송 · 무료배송 · 주말예약환영 &nbsp;·&nbsp; 📞 1533-6133 &nbsp;·&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🌷 고객님의 따뜻한 마음을 정성 가득히 전해드립니다. </span>
   </div>
 
   <!-- 최소 2시간 배송 강조 배너 -->
-  <div style="background:linear-gradient(135deg,#ffd600 0%,#ffeb3b 50%,#ffd600 100%); padding:4px 12px; text-align:center; border-top:1px solid #fbc02d; border-bottom:1px solid #fbc02d;">
-    <div style="max-width:1060px; margin:0 auto;">
-      <svg viewBox="0 0 480 34" preserveAspectRatio="xMidYMid meet" style="width:100%; height:auto; display:block; max-height:44px;">
+  <div style="background:linear-gradient(135deg,#ffd600 0%,#ffeb3b 50%,#ffd600 100%); padding:4px 12px; text-align:center; border-top:1px solid #fbc02d; border-bottom:1px solid #fbc02d; position:relative;">
+    <div style="max-width:1060px; margin:0 auto; position:relative; height:38px;">
+      <!-- 메시지 A: 기본 안내 -->
+      <svg class="msg-a" viewBox="0 0 480 34" preserveAspectRatio="xMidYMid meet" style="position:absolute; left:0; right:0; top:0; width:100%; height:auto; max-height:44px;">
         <g transform="matrix(1 0 0 1.5 0 0)">
-          <!-- 빨간 번개 아이콘 (Feather zap, 정세로) -->
           <g transform="translate(4 1) rotate(-18 12 12) scale(0.85)">
             <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="#c2185b" stroke="#c2185b" stroke-width="0.6" stroke-linejoin="round"/>
           </g>
           <text x="252" y="17" text-anchor="middle" font-weight="900" fill="#c2185b" font-size="18" textLength="440" lengthAdjust="spacingAndGlyphs" style="font-family:'Noto Sans KR',sans-serif;">전국 최소 2시간 무료배송 · 재주문 5% 할인 · 축하/근조 49,000원부터~</text>
+        </g>
+      </svg>
+      <!-- 메시지 B: 토요일 예식 안내 -->
+      <svg class="msg-b" viewBox="0 0 480 34" preserveAspectRatio="xMidYMid meet" style="position:absolute; left:0; right:0; top:0; width:100%; height:auto; max-height:44px; opacity:0;">
+        <g transform="matrix(1 0 0 1.5 0 0)">
+          <text x="240" y="17" text-anchor="middle" font-weight="900" fill="#c2185b" font-size="18" textLength="460" lengthAdjust="spacingAndGlyphs" style="font-family:'Noto Sans KR',sans-serif;">⏰ 토요일 오전 예식 — 금요일까지 예약 필수 ⏰</text>
         </g>
       </svg>
     </div>
