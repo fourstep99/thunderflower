@@ -386,6 +386,16 @@
       var URL_GET='https://api.jsonbin.io/v3/b/'+BIN+'/latest';
       var URL_PUT='https://api.jsonbin.io/v3/b/'+BIN;
       function getSource(){
+        // URL 파라미터 우선 체크 (referrer 누락된 모바일 광고 유입 대응)
+        try{
+          var p=new URLSearchParams(location.search);
+          var u=p.get('utm')||p.get('utm_source');
+          if(u){
+            if(/naver/i.test(u)) return '네이버광고';
+            if(/google/i.test(u)) return '구글광고';
+            return u.substring(0,30);
+          }
+        }catch(e){}
         var ref=document.referrer;
         if(!ref) return '직접유입';
         if(/acecounter\.com/.test(ref)) return '네이버광고';
