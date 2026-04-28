@@ -56,22 +56,22 @@
       100%      { opacity: 1; }
     }
 
-    /* 노란 배너 메시지 교차 표시 (8초 주기, 각 4초) */
+    /* 노란 배너 교차 (7.5초 주기 · A=3.5초, B=4초) */
     @keyframes msgShowA {
-      0%, 47%  { opacity: 1; }
-      50%, 97% { opacity: 0; }
+      0%, 44%  { opacity: 1; }
+      47%, 97% { opacity: 0; }
       100%     { opacity: 1; }
     }
     @keyframes msgShowB {
-      0%, 47%  { opacity: 0; }
-      50%, 97% { opacity: 1; }
+      0%, 44%  { opacity: 0; }
+      47%, 97% { opacity: 1; }
       100%     { opacity: 0; }
     }
     .msg-a {
-      animation: msgShowA 7s ease-in-out infinite;
+      animation: msgShowA 7.5s ease-in-out infinite;
     }
     .msg-b {
-      animation: msgShowB 7s ease-in-out infinite;
+      animation: msgShowB 7.5s ease-in-out infinite;
     }
 
     /* 카카오톡 플로팅 버튼 흔들림 (주목도 ↑) */
